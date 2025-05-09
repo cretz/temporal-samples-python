@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from temporalio import workflow
 
-from openai_agents.adapters.invoke_model_activity import OpenAIActivityInput, invoke_open_ai_model
-
 with workflow.unsafe.imports_passed_through():
+    from openai_agents.adapters.invoke_model_activity import OpenAIActivityInput, invoke_open_ai_model
     from datetime import timedelta
     from idlelib.query import Query
     from typing import Union, Optional, List, Literal, Iterable, Callable, Any
@@ -84,7 +83,19 @@ class TemporalModelProvider(ModelProvider):
     def get_model(self, model_name: str | None) -> Model:
         if model_name is None:
             model_name = DEFAULT_MODEL
-        client = AsyncOpenAI()
+        # This chain breaks in workflow sandbox:
+        # * Create AsyncOpenAI
+        # * Which creates AsyncHttpxClientWrapper
+        # * Which lazily imports httpcore
+        # * Which imports a few things itself, then imports anyio
+        # * Which imports sniffio
+        # * Which builds a thread-local as part of its import, which is illegal in workflows
+        #
+        # So for now we'll mark this as both import pass through _and_ sandbox avoided since it
+        # does lazy imports _and_ illegal things on import
+        with workflow.unsafe.imports_passed_through():
+            with workflow.unsafe.sandbox_unrestricted():
+                client = AsyncOpenAI()
         return OpenAIResponsesModel(model_name, _monkey_patch_open_ai_client_create(client))
 
 

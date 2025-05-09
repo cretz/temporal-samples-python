@@ -29,6 +29,7 @@ async def main():
         activities=[invoke_open_ai_model, get_weather],
         # activity_executor=activity_executor,
     )
+    print("Running worker...")
     await worker.run()
 
 

@@ -10,7 +10,7 @@ with workflow.unsafe.imports_passed_through():
     from openai_agents.workflows.get_weather_activity import get_weather
 
 
-@workflow.defn(sandboxed=False)
+@workflow.defn
 class ToolsWorkflow:
     @workflow.run
     async def run(self, question: str) -> str:

@@ -39,7 +39,7 @@ langchain = [
     "langchain>=0.1.7,<0.2 ; python_version >= '3.8.1' and python_version < '4.0'",
     "langchain-openai>=0.0.6,<0.0.7 ; python_version >= '3.8.1' and python_version < '4.0'",
     "openai>=1.4.0,<2",
-    "fastapi>=0.105.0,<0.106",
+    "fastapi>=0.115.12",
     "tqdm>=4.62.0,<5",
     "uvicorn[standard]>=0.24.0.post1,<0.25",
 ]
@@ -47,6 +47,7 @@ open-telemetry = [
     "temporalio[opentelemetry]",
     "opentelemetry-exporter-otlp-proto-grpc==1.18.0",
 ]
+openai-agents = ["openai-agents>=0.0.14", "fastapi>=0.115.12", "rich>=14.0.0"]
 pydantic-converter = ["pydantic>=2.10.6,<3"]
 sentry = ["sentry-sdk>=1.11.0,<2"]
 trio-async = [
@@ -60,19 +61,19 @@ cloud-export-to-parquet = [
     "pyarrow>=19.0.1",
 ]
 
-[tool.uv]
-default-groups = [
-    "dev",
-    "bedrock",
-    "dsl",
-    "encryption",
-    "gevent",
-    "langchain",
-    "open-telemetry",
-    "pydantic-converter",
-    "sentry",
-    "trio-async",
-]
+# [tool.uv]
+# default-groups = [
+#     "dev",
+#     "bedrock",
+#     "dsl",
+#     "encryption",
+#     "gevent",
+#     "langchain",
+#     "open-telemetry",
+#     "pydantic-converter",
+#     "sentry",
+#     "trio-async",
+# ]
 
 [tool.hatch.build.targets.sdist]
 include = ["./**/*.py"]

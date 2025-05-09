@@ -63,7 +63,7 @@ def synthesizer_agent() -> Agent:
     )
 
 
-@workflow.defn(sandboxed=False)
+@workflow.defn
 class AgentsAsToolsWorkflow:
     @workflow.run
     async def run(self, msg: str) -> str:
